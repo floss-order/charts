@@ -1,24 +1,27 @@
-import React from "react"
-import ApexChart from "react-apexcharts"
+import React from 'react'
+import ApexChart from 'react-apexcharts'
 
-function Chart({chartData, id, type}) {
-    const series = chartData.map((c, idx) => {
-        return {
-            name: c.title,
-            data: c.data.map(item => ({x: item[0], y: item[1]}))
-        }
-    })
+function Chart({labels, series, type, title}) {
     const options = {
-        chart: {
-            id: "basic-bar"
+        series: series,
+        labels: labels,
+        title: {
+            text: title,
+            align: 'center',
+            margin: 10,
+            offsetX: 0,
+            offsetY: 0,
+            floating: false,
+            style: {
+              fontSize:  '32px',
+              fontWeight:  'bold',
+              fontFamily:  undefined,
+              color:  '#263238'
+            },
         },
-        xaxis: {
-            type: 'category'
-        }
     }
-    console.log(series)
     return (
-        <ApexChart options={options} series={series} type={type} height={450} />
+        <ApexChart options={options} series={options.series} type={type} />
     )
 }
 

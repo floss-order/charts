@@ -10,6 +10,18 @@ export async function getDonutData() {
     return donutData
 }
 
+export async function login(credentials) {
+    const user = await fetchData('login', {
+        method: 'POST', 
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    })
+    return user
+}
+
 async function fetchData(endpoint, options = undefined) {
     const request = await fetch(BASE_URL + endpoint + '.json', options)
     const data = await request.json()

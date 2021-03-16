@@ -21,7 +21,7 @@ function Chart({labels, series, type, title}) {
         },
     }
     return (
-        <ApexChart options={options} series={options.series} type={type} />
+        <ApexChart options={options} series={options.series} type={type} height={450} />
     )
 }
 

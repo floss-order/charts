@@ -1,26 +1,29 @@
-import React, { useContext, useRef } from 'react'
+import React, { useRef, useCallback } from 'react'
+import { withRouter } from 'react-router-dom'
 import * as api from '../api'
-import { AuthContext } from '../context/AuthContext'
 
-function Login() {
+function LoginForm({history}) {
     const loginRegExp = '^[a-z0-9A-Z]{3,20}$' 
     const passwordRegExp = '^.{5,}$'
 
     const loginRef = useRef()
     const passwordRef = useRef()
 
-    const {user, setUser} = useContext(AuthContext)
-
-    function handleSubmit(event) {
+    const handleSubmit = useCallback(async event => {
         event.preventDefault()
 
         const credentials = {
             login: loginRef.current.value,
             password: passwordRef.current.value
         }
-        api.login(credentials)
-            .then(user => setUser(user))
-    }
+
+        const user = await api.login(credentials)
+
+        localStorage.setItem('login', user.login)
+        localStorage.setItem('token', user.token)
+
+        history.push('/')
+    }, [history])
     return (
         <form onSubmit={handleSubmit}>
             <label htmlFor="login">Login</label>
@@ -34,4 +37,4 @@ function Login() {
     )
 }
 
-export default Login
+export default withRouter(LoginForm)

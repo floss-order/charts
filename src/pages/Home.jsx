@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import Chart from '../components/Chart'
 import * as api from '../api'
+import LineChart from '../components/LineChart'
+import DonutChart from '../components/DonutChart'
 
 function Home() {
     const [lineChartData, setLineChartData] = useState()
+    const [donutChartData, setDonutChartData] = useState()
     const [isLoading, setIsLoading] = useState(true)
 
-    useEffect(async () => {
-        const {list} = await api.getGraphData()
-        setLineChartData(list)
-        setIsLoading(false)
+    useEffect(() => {
+        async function fetchData() {
+            const fetchedLineChartData = await api.getGraphData()
+            setLineChartData(fetchedLineChartData)
+    
+            const fetchedDonutChartData = await api.getDonutData()
+            setDonutChartData(fetchedDonutChartData)
+    
+            setIsLoading(false)
+        }
+        fetchData()
     }, [])
     return (
         <div>
@@ -18,7 +27,10 @@ function Home() {
                 ? 
                 <p>Loading...</p>
                 :
-                <Chart chartData={lineChartData} type="line" />
+                <>
+                    <LineChart chartData={lineChartData} />
+                    <DonutChart chartData={donutChartData} />
+                </>
             }
         </div>
     )
